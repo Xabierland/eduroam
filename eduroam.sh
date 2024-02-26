@@ -13,7 +13,7 @@ echo " "
 
 # Descargar el certificado
 
-wget https://github.com/Xabierland/eduroam/blob/ea5dbbbd1ef1ccba287121d189fcec5e4672817c/ca.pem -O /home/$USER/.config/cat_installer/ca.pem
+wget https://raw.githubusercontent.com/Xabierland/eduroam/88335505038d25d43afdaee59e49c437c2adf8f0/ca.pem -O /home/$USER/.config/cat_installer/ca.pem > /dev/null
 
 # Crea el archivo de configuración
 echo "[connection]
@@ -33,7 +33,7 @@ proto=rsn;
 
 [802-1x]
 altsubject-matches=DNS:freeradius.ehu.es;
-ca-cert=/home/xabierland/.config/cat_installer/ca.pem
+ca-cert=/home/$USER/.config/cat_installer/ca.pem
 eap=ttls;
 identity=$usuario
 password=$contrasena
@@ -46,4 +46,11 @@ method=auto
 addr-gen-mode=default
 method=auto
 
-[proxy]
+[proxy]" | sudo tee /etc/NetworkManager/system-connections/eduroam > /dev/null
+
+# Cambia los permisos del archivo
+sudo chmod 600 /etc/NetworkManager/system-connections/eduroam
+sudo chown root:root /etc/NetworkManager/system-connections/eduroam
+
+# Reinicia NetworkManager
+sudo systemctl restart NetworkManager
