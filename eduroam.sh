@@ -3,7 +3,7 @@ clear
 echo "Configurador de eduroam"
 echo "by Xabierland"
 echo " "
-echo "Introduce tu usuario de la UPV/EHU"
+echo "Introduce tu LDAP de la UPV/EHU"
 read usuario
 echo "Introduce tu contraseña"
 read contrasena
@@ -13,7 +13,7 @@ echo " "
 
 # Descargar el certificado
 
-wget https://raw.githubusercontent.com/Xabierland/eduroam/88335505038d25d43afdaee59e49c437c2adf8f0/ca.pem -O /home/$USER/.config/cat_installer/ca.pem > /dev/null
+cp ca.pem /home/$USER/.config/cat_installer/ca.pem > /dev/null
 
 # Crea el archivo de configuración
 echo "[connection]
@@ -35,7 +35,7 @@ proto=rsn;
 altsubject-matches=DNS:freeradius.ehu.es;
 ca-cert=/home/$USER/.config/cat_installer/ca.pem
 eap=ttls;
-identity=$usuario
+identity=$usuario@ehu.es
 password=$contrasena
 phase2-auth=pap
 
@@ -46,11 +46,15 @@ method=auto
 addr-gen-mode=default
 method=auto
 
-[proxy]" | sudo tee /etc/NetworkManager/system-connections/eduroam > /dev/null
+[proxy]" | sudo tee /etc/NetworkManager/system-connections/eduroam.nmconnection > /dev/null
 
 # Cambia los permisos del archivo
-sudo chmod 600 /etc/NetworkManager/system-connections/eduroam
-sudo chown root:root /etc/NetworkManager/system-connections/eduroam
+sudo chmod 600 /etc/NetworkManager/system-connections/eduroam.nmconnection
+sudo chown root:root /etc/NetworkManager/system-connections/eduroam.nmconnection
 
 # Reinicia NetworkManager
+sudo rm /etc/NetworkManager/system-connections/b749c5ca-6cfa-477e-8354-c9f1a8d3ba2e.nmmeta
 sudo systemctl restart NetworkManager
+
+# Mensaje final
+echo "Listo!"
