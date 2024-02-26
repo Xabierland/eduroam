@@ -54,6 +54,7 @@ sudo chown root:root /etc/NetworkManager/system-connections/eduroam.nmconnection
 
 # Reinicia NetworkManager
 sudo rm /etc/NetworkManager/system-connections/b749c5ca-6cfa-477e-8354-c9f1a8d3ba2e.nmmeta
+
 sudo systemctl restart NetworkManager
 
 # Mensaje final
