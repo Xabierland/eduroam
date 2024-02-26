@@ -1,2 +1,3 @@
 # eduroam
- Configura la red Eduroam para la UPV/EHU
+
+Configura la red Eduroam para la UPV/EHU
